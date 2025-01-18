@@ -40,4 +40,4 @@ out/
 .kotlin
 
 ### temp ###
-./src/main/kotlin/com.flowerygateway/temp
+./src/main/kotlin/com/flowery/flowerygateway/temp/*
