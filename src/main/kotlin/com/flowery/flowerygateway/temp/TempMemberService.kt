@@ -1,9 +1,6 @@
-package com.flowery.flowerygateway.service
+package com.flowery.flowerygateway.temp
 
-import com.flowery.flowerygateway.dto.tempMember
-import com.flowery.flowerygateway.repository.tempMemberRepository
 import org.springframework.data.repository.findByIdOrNull
-import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
 import java.util.*
 

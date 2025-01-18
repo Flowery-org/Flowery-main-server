@@ -1,4 +1,4 @@
-package com.flowery.flowerygateway.dto
+package com.flowery.flowerygateway.temp
 
 import jakarta.persistence.Entity
 import java.util.*

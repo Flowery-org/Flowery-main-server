@@ -40,4 +40,4 @@ out/
 .kotlin
 
 ### temp ###
-/resources/application.properties
+./src/main/kotlin/com.flowerygateway/temp
