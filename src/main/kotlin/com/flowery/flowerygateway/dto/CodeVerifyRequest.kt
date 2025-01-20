@@ -1,8 +1,7 @@
 package com.flowery.flowerygateway.dto
 
-
-data class PasswordRequestDTO(
+data class CodeVerifyRequest (
     val name: String,
     val email: String,
-    var newPassword: String?
+    val inputCode: String
 )
