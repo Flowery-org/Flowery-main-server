@@ -38,3 +38,6 @@ out/
 
 ### Kotlin ###
 .kotlin
+
+### temp ###
+./src/main/kotlin/com/flowery/flowerygateway/temp/*
