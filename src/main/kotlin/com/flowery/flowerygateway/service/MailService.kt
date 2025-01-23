@@ -11,21 +11,19 @@ import reactor.core.publisher.Mono
 
 @Service("mailService")
 class MailService(@Qualifier("authServiceClient") private val webClient: WebClient) {
-    fun verifyCode(request: CodeVerifyRequest) : ResponseEntity<String>? {
+    fun verifyCode(request: CodeVerifyRequest) : Mono<String> {
         val response = webClient.post()
             .uri("/verification")
             .bodyValue(request)
-            .retrieve().toEntity(String::class.java)
-            .block()
+            .retrieve().bodyToMono(String::class.java)
         return response
     }
 
-    fun sendPasswordCode(request: PasswordRequestDTO) : ResponseEntity<String>? {
+    fun sendPasswordCode(request: PasswordRequestDTO) : Mono<String> {
         val response = webClient.post()
             .uri("/emails")
             .bodyValue(request)
-            .retrieve().toEntity(String::class.java)
-            .block()
+            .retrieve().bodyToMono(String::class.java)
         return response
     }
 }
