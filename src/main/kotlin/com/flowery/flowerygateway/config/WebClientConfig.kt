@@ -12,9 +12,16 @@ class WebClientConfig {
     }
 
     @Bean
-    fun webClient(): WebClient {
+    fun authServiceClient(): WebClient {
         return WebClient.builder()
-            .baseUrl("http://localhost:6379")
+            .baseUrl("http://localhost:6379/api/auth/")
+            .build()
+    }
+
+    @Bean
+    fun dbServiceClient() : WebClient {
+        return WebClient.builder()
+            .baseUrl("http://localhost:6379/api/")
             .build()
     }
 }
