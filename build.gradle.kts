@@ -44,6 +44,8 @@ dependencies {
     runtimeOnly("io.jsonwebtoken:jjwt-impl:0.11.5")
     runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.11.5") // JSON 파싱용
 
+    implementation("com.google.code.gson:gson:2.10.1")
+
 }
 
 kotlin {
@@ -55,6 +57,8 @@ kotlin {
 tasks.withType<Test> {
     useJUnitPlatform()
 }
+
+
 
 
 
