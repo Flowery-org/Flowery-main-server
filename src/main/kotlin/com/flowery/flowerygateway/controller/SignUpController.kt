@@ -1,6 +1,6 @@
 package com.flowery.flowerygateway.controller
 
-import com.flowery.flowerygateway.dto.CodeVerifyRequest
+import com.flowery.flowerygateway.dto.CodeVerifyRequestDTO
 import org.springframework.web.bind.annotation.*
 import com.flowery.flowerygateway.dto.PasswordRequestDTO
 import com.flowery.flowerygateway.temp.tempMember
@@ -41,7 +41,7 @@ class SignUpController(
     }
 
     @PostMapping("/gardener/password/code")
-    fun checkVerificationCode(@RequestBody request: CodeVerifyRequest) : Mono<ResponseEntity<String>> {
+    fun checkVerificationCode(@RequestBody request: CodeVerifyRequestDTO) : Mono<ResponseEntity<String>> {
         return mailService.verifyCode(request)
             .map { result ->
                 when (result) {
