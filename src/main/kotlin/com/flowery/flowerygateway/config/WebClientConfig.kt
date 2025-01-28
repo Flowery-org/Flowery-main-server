@@ -24,4 +24,11 @@ class WebClientConfig {
             .baseUrl("http://localhost:6379/api/")
             .build()
     }
+
+    @Bean
+    fun followingServiceClient() : WebClient {
+        return WebClient.builder()
+            .baseUrl("http://localhost:6379/v1/")
+            .build()
+    }
 }
