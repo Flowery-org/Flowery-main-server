@@ -5,3 +5,4 @@ data class SignupRequest (val ident: String,
                           val userName: String,
                           val email: String,
                           val nickName: String)
+
