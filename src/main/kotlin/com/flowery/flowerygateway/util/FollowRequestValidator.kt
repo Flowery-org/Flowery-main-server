@@ -8,7 +8,7 @@ class FollowRequestValidator {
 
     fun validate(request: RemoveFollowerRequestDTO): Mono<RemoveFollowerRequestDTO> {
 
-        if (request.targetId == request.requesterId) {
+        if (request.followerId == request.followingId) {
             return Mono.error(IllegalArgumentException("Target ID and Requester ID cannot be the same."))
         }
 
