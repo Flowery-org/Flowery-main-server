@@ -1,7 +1,7 @@
 package com.flowery.flowerygateway.service
 
 import com.flowery.flowerygateway.dto.CodeVerifyRequestDTO
-import com.flowery.flowerygateway.dto.PasswordRequestDTO
+import com.flowery.flowerygateway.dto.FindPasswordRequestDTO
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.stereotype.Service
 import org.springframework.web.reactive.function.client.WebClient
@@ -17,7 +17,7 @@ class MailService(@Qualifier("authServiceClient") private val webClient: WebClie
         return response
     }
 
-    fun sendPasswordCode(request: PasswordRequestDTO) : Mono<String> {
+    fun sendPasswordCode(request: FindPasswordRequestDTO) : Mono<String> {
         val response = webClient.post()
             .uri("/emails")
             .bodyValue(request)
