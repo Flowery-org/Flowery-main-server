@@ -3,6 +3,7 @@ package com.flowery.flowerygateway.controller
 import com.flowery.flowerygateway.dto.RemoveFollowerRequestDTO
 import com.flowery.flowerygateway.service.FollowerService
 import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -20,7 +21,7 @@ class FollowerController(private val followerService: FollowerService) {
     }
 
 
-    @GetMapping("gardener/followers")
+    @DeleteMapping("gardener/followers")
     fun getFollowers(@RequestParam id: UUID): Mono<ResponseEntity<List<UUID>>> {
         return followerService.getFollowerList(id) // UUID 리스트를 바로 반환
     }
