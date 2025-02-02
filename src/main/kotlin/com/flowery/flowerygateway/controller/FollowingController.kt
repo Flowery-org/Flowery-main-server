@@ -46,7 +46,7 @@ class FollowingController(@Autowired val followingService : FollowingService) {
     }
 
     // delete following -> Unfollowing Request DTO (followerId, followingId)
-    @PostMapping("gardener/unfollowing")
+    @DeleteMapping("gardener/following")
     fun Unfollowing(unfollowingRequestDTO: UnfollowingRequestDTO): Mono<ResponseEntity<String>> {
         return followingService.deleteFollowing(unfollowingRequestDTO)
             .flatMap { response ->
