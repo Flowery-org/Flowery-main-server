@@ -15,7 +15,7 @@ import java.util.*
 @RestController
 class FollowerController(private val followerService: FollowerService) {
 
-    @DeleteMapping("gardener/followers")
+    @DeleteMapping("gardener/follower")
     fun removeFollowers(@RequestBody removeFollowerRequestDTO : RemoveFollowerRequestDTO) : Mono<ResponseEntity<String>> {
         return followerService.removeFollower(removeFollowerRequestDTO)
     }
