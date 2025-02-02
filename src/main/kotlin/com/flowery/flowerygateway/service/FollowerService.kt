@@ -26,8 +26,8 @@ class FollowerService(@Qualifier("followingServiceClient") private val webClient
                     // 200 OK가 아닐 경우, 그대로 상태 코드 반환
                     Mono.just(ResponseEntity.status(response.statusCode).body(emptyList()))
                 } else if (response.body == null) {
-                    // body가 null이면 404 Not Found 반환
-                    Mono.just(ResponseEntity.status(404).body(emptyList()))
+                    // body가 null이면 400 Bad Request 반환
+                    Mono.just(ResponseEntity.status(400).body(emptyList()))
                 } else {
                     // 정상 응답일 경우, UUID 리스트로 변환 후 반환
                     val uuidList = response.body!!.flatMap { it.values }

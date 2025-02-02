@@ -15,13 +15,13 @@ import java.util.*
 @RestController
 class FollowerController(private val followerService: FollowerService) {
 
-    @PostMapping("gardener/removeFollower")
+    @DeleteMapping("gardener/followers")
     fun removeFollowers(@RequestBody removeFollowerRequestDTO : RemoveFollowerRequestDTO) : Mono<ResponseEntity<String>> {
         return followerService.removeFollower(removeFollowerRequestDTO)
     }
 
 
-    @DeleteMapping("gardener/followers")
+    @GetMapping("gardener/followers")
     fun getFollowers(@RequestParam id: UUID): Mono<ResponseEntity<List<UUID>>> {
         return followerService.getFollowerList(id) // UUID 리스트를 바로 반환
     }
