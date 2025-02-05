@@ -23,8 +23,9 @@ dependencies {
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
 
-    // Adaptive traffic throttler를 위한 Bucket4j 의존성 추가
-    implementation("com.github.vladimir-bukhtoyarov:bucket4j-core:8.0.1")
+    // Jedis 사용
+    implementation("org.springframework.boot:spring-boot-starter-data-redis")
+    implementation("redis.clients:jedis:5.2.0")
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
@@ -35,7 +36,6 @@ dependencies {
     implementation("io.projectreactor:reactor-core")
     implementation("jakarta.validation:jakarta.validation-api:3.0.2")
     implementation("org.hibernate.validator:hibernate-validator:8.0.0.Final") // Validation 구현체
-    implementation("org.springframework.boot:spring-boot-starter-data-redis")
     implementation("org.springframework.boot:spring-boot-starter-security")
     implementation("io.jsonwebtoken:jjwt-api:0.11.5")
     runtimeOnly("io.jsonwebtoken:jjwt-impl:0.11.5")
