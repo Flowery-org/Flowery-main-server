@@ -3,8 +3,8 @@ package com.flowery.flowerygateway.controller
 import com.flowery.flowerygateway.dto.CodeVerifyRequestDTO
 import org.springframework.web.bind.annotation.*
 import com.flowery.flowerygateway.dto.FindPasswordRequestDTO
+import com.flowery.flowerygateway.dto.Gardener
 import com.flowery.flowerygateway.dto.PasswordRenewalRequestDTO
-import com.flowery.flowerygateway.temp.tempMember
 import com.flowery.flowerygateway.service.MailService
 import com.flowery.flowerygateway.service.MemberService
 import org.springframework.beans.factory.annotation.Autowired
@@ -27,8 +27,8 @@ class SignUpController(
     @PostMapping("/gardener/password")
     fun findPassword(@RequestBody request: FindPasswordRequestDTO): Mono<ResponseEntity<String>> {
         // tempMember - 추후 생성될 user 관련 entity로 대체
-        val member: tempMember? = memberService.findByName(request.name)
-        if (member == null || member.email != request.email) {
+        val gardener: Gardener? = memberService.findByName(request.name)
+        if (gardener == null || gardener.email != request.email) {
             return Mono.just(ResponseEntity.status(400).body("User not found or email mismatch"))
         }
 
