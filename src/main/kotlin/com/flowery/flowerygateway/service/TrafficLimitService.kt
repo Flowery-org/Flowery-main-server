@@ -1,33 +1,33 @@
 package com.flowery.flowerygateway.service
 
 import org.springframework.stereotype.Service
-import java.util.concurrent.ConcurrentHashMap
-import io.github.bucket4j.Bucket
-import io.github.bucket4j.Bandwidth
-import java.time.Duration
+import redis.clients.jedis.JedisPooled
 
 @Service
 class TrafficLimitService {
 
-    // IP별로 Bucket을 관리
-    private val buckets: ConcurrentHashMap<String, Bucket> = ConcurrentHashMap()
+    private val jedisClient = JedisPooled("localhost", 6379)
+    private val cacheKeyPrefix = "rate-limit:" // redis key prefix
+    private val maxRequests = 10 // 요청 횟수 최대 10
+    private val timeWindowSeconds = 60 // 1분 단위로 제한
 
-    // IP에 해당하는 Bucket 생성 또는 조회
-    fun getBucket(ip: String): Bucket{
-        val bucket = buckets.computeIfAbsent(ip) {
-            Bucket.builder()
-                .addLimit(Bandwidth.simple(10, Duration.ofMinutes(1)) )// 분당 10 요청
-                .build()
-        }
-        return bucket
-    }
+    data class RateLimitResult(
+        val allowed: Boolean,
+        val retryAfter: Int?
+    )
 
     // 요청을 처리할 수 있는지 확인
-    fun isRequestAllowed(ip: String): Boolean {
-        val bucket = getBucket(ip)
-        val result =  bucket.tryConsume(1)
+    fun isRequestAllowed(ip: String): RateLimitResult {
+        val key = "$cacheKeyPrefix$ip"
+        val currentCount = jedisClient.get(key)?.toIntOrNull() ?: 0
 
-        return result
+        return if (currentCount < maxRequests) {
+            jedisClient.setex(key, timeWindowSeconds.toLong(), (currentCount + 1).toString())  // 요청 수 증가
+            RateLimitResult(allowed = true, retryAfter = null)
+        } else {
+            val ttl = jedisClient.ttl(key).toInt()  // 현재 TTL 조회
+            RateLimitResult(allowed = false, retryAfter = ttl)
+        }
     }
 
 }

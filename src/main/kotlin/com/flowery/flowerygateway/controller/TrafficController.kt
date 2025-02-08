@@ -1,5 +1,6 @@
 package com.flowery.flowerygateway.controller
 
+import com.flowery.flowerygateway.dto.RateLimitResponseDTO
 import com.flowery.flowerygateway.service.TrafficLimitService
 import jakarta.servlet.http.HttpServletRequest
 import org.springframework.http.HttpStatus
@@ -15,22 +16,30 @@ class TrafficController(private val trafficLimitService: TrafficLimitService) {
 
     /**
      *  서비스에서 요청 허용 여부 확인
-     *  허용, 버킷에서 토큰(요청 가능 횟수)을 차감하고 요청을 처리
-     *  거부, 버킷이 비어 있으면 요청을 거부하고 429 Too Many Requests 응답을 반환
+     *
+     *  @return 서비스에서 요청 허용 여부 DTO를 포함한 ResponseEntity
+     *
      * **/
     @GetMapping("/limited-endpoint")
     @ResponseBody
-    fun limitedEndpoint(request : HttpServletRequest): ResponseEntity<String> {
+    fun limitedEndpoint(request: HttpServletRequest): ResponseEntity<RateLimitResponseDTO> {
         val clientIp = getClientIp(request)
+        val result = trafficLimitService.isRequestAllowed(clientIp)
 
-        return if (trafficLimitService.isRequestAllowed(clientIp)){
-            ResponseEntity.ok("Request accepted. Your IP: $clientIp")
-        }
-        else {
+        val response = RateLimitResponseDTO(
+            success = result.allowed,
+            message = if (result.allowed) "Request accepted." else "Too many requests. Please try again later.",
+            clientIp = clientIp,
+            retryAfter = result.retryAfter
+        )
+
+        return if (result.allowed) {
+            ResponseEntity.ok(response)
+        } else {
             ResponseEntity
                 .status(HttpStatus.TOO_MANY_REQUESTS)
-                .header("Retry-After", "60") // 제한 해제까지 60초
-                .body("Too many requests. Please try again later.")
+                .header("Retry-After", result.retryAfter.toString())
+                .body(response)
         }
     }
 
