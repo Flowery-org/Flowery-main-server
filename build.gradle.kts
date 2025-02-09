@@ -41,6 +41,12 @@ dependencies {
     runtimeOnly("io.jsonwebtoken:jjwt-impl:0.11.5")
     runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.11.5") // JSON 파싱용
     implementation("com.google.code.gson:gson:2.10.1")
+
+    testImplementation("org.springframework.boot:spring-boot-starter-test") {
+        exclude(group = "org.junit.vintage", module = "junit-vintage-engine")
+    }
+    testImplementation("io.projectreactor:reactor-test")
+    testImplementation("com.google.code.gson:gson:2.10.1")
 }
 
 kotlin {
