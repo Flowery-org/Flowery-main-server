@@ -31,4 +31,5 @@ class WebClientConfig {
             .baseUrl("http://localhost:6379/v1/")
             .build()
     }
+
 }
