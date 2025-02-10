@@ -2,7 +2,6 @@ package com.flowery.flowerygateway.service
 
 import com.flowery.flowerygateway.dto.Gardener
 import com.flowery.flowerygateway.dto.PasswordRenewalRequestDTO
-import com.flowery.flowerygateway.model.User
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
