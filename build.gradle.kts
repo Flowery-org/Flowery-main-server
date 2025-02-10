@@ -32,6 +32,7 @@ dependencies {
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa:3.1.5")
     implementation("org.springframework.boot:spring-boot-starter-webflux")
+    implementation("org.springframework.boot:spring-boot-starter-websocket")
 
     implementation("io.projectreactor:reactor-core")
     implementation("jakarta.validation:jakarta.validation-api:3.0.2")
