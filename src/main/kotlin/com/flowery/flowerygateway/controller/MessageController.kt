@@ -8,6 +8,7 @@ import reactor.core.publisher.Mono
 import com.flowery.flowerygateway.dto.Message
 import com.flowery.flowerygateway.service.MessageService
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.web.bind.annotation.DeleteMapping
 
 @RestController
 class MessageController(@Autowired val messageService: MessageService) {
@@ -28,6 +29,16 @@ class MessageController(@Autowired val messageService: MessageService) {
             return Mono.just(ResponseEntity.ok("Message sent"))
         } catch (e: Exception) {
             return Mono.just(ResponseEntity.status(404).body("Message Sending Failed"))
+        }
+    }
+
+    @DeleteMapping("/message")
+    fun deleteMessage(@RequestBody message: Message): Mono<ResponseEntity<String>> {
+        try {
+            messageService.disconnect()
+            return Mono.just(ResponseEntity.ok("Disconnected"))
+        } catch (e: Exception) {
+            return Mono.just(ResponseEntity.status(404).body("Disconnection Error"))
         }
     }
 }

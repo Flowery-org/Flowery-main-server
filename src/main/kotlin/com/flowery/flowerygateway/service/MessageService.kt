@@ -14,7 +14,7 @@ import java.util.concurrent.CompletableFuture
 @Service("messageService")
 class MessageService {
     private val logger = LoggerFactory.getLogger(MessageService::class.java)
-    private val wsUrl = "http://localhost:8001/ws/"
+    private val wsUrl = "ws://localhost:8001/ws/"
     var session: WebSocketSession? = null
     private val mapper = jacksonObjectMapper()
 
@@ -25,7 +25,8 @@ class MessageService {
 
         CompletableFuture.runAsync {
             try {
-                futureSession.get()
+                session = futureSession.get()
+                logger.info("WebSocket session established")
             } catch (e: Exception) {
                 logger.error("Exception in WebSocket connect: ", e)
             }
@@ -41,5 +42,18 @@ class MessageService {
                 logger.warn("WebSocket session is closed")
             }
         } ?: logger.warn("WebSocket session is not established")
+    }
+
+    fun disconnect() {
+        session?.let {
+            if (it.isOpen) {
+                try {
+                    it.close()
+                    logger.info("WebSocket session closed")
+                } catch (e: Exception) {
+                    logger.error("Exception in WebSocket disconnect: ", e)
+                }
+            }
+        } ?: logger.warn("No active WebSocket session to close")
     }
 }
