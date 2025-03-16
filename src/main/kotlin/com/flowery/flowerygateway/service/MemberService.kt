@@ -1,5 +1,7 @@
 package com.flowery.flowerygateway.service
 
+import com.flowery.flowerygateway.dto.EmailVerificationDto
+import com.flowery.flowerygateway.dto.FindPasswordRequestDTO
 import com.flowery.flowerygateway.dto.Gardener
 import com.flowery.flowerygateway.dto.PasswordRenewalRequestDTO
 import org.springframework.beans.factory.annotation.Qualifier
@@ -31,5 +33,21 @@ class MemberService(@Qualifier("authServiceClient") private val authService: Web
         return authService.delete()
             .uri("")
             .retrieve().bodyToMono()
+    }
+
+    fun verifyCode(request: EmailVerificationDto) : Mono<String> {
+        val response = authService.post()
+            .uri("/verification")
+            .bodyValue(request)
+            .retrieve().bodyToMono(String::class.java)
+        return response
+    }
+
+    fun sendPasswordCode(request: FindPasswordRequestDTO) : Mono<String> {
+        val response = authService.post()
+            .uri("/emails")
+            .bodyValue(request)
+            .retrieve().bodyToMono(String::class.java)
+        return response
     }
 }

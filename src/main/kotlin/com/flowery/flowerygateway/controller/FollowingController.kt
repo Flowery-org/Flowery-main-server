@@ -13,12 +13,12 @@ import java.util.*
 @RestController
 class FollowingController(@Autowired val followingService : FollowingService) {
     // add following -> Following Request DTO (followerId, followingId)
-    @PostMapping("gardener/newfollowing")
+    @PostMapping("gardener/following")
     fun newFollowing(followingRequestDTO: FollowingRequestDTO): Mono<ResponseEntity<String>> {
         return followingService.addFollowing(followingRequestDTO)
             .flatMap { response ->
-                if (response.body == null || response.body!!.get("ok") == false) {
-                    Mono.just(ResponseEntity.status(404).body("Following failed"))
+                if (response.body == null) {
+                    Mono.just(ResponseEntity.status(HttpStatus.NOT_FOUND).body("Following failed"))
                 } else if (response.statusCode != HttpStatus.OK) {
                     Mono.just(ResponseEntity.status(response.statusCode).body("Following failed"))
                 } else {
@@ -28,14 +28,14 @@ class FollowingController(@Autowired val followingService : FollowingService) {
     }
 
     // following list -> (userId)
-    @GetMapping("gardener/followings")
+    @GetMapping("gardener/following")
     fun getFollowing(@RequestParam id : UUID): Mono<ResponseEntity<List<UUID>>> {
         return followingService.followingList(id)
             .flatMap { list ->
                 if (list.statusCode != HttpStatus.OK) {
                     Mono.just(ResponseEntity.status(list.statusCode).body(emptyList()))
                 } else if (list.body == null) {
-                    Mono.just(ResponseEntity.status(404).body(emptyList()))
+                    Mono.just(ResponseEntity.status(HttpStatus.NOT_FOUND).body(emptyList()))
                 } else {
                     val uuidList = list.body!!.flatMap { user ->
                         user.values
@@ -46,12 +46,12 @@ class FollowingController(@Autowired val followingService : FollowingService) {
     }
 
     // delete following -> Unfollowing Request DTO (followerId, followingId)
-    @DeleteMapping("gardener/unfollowing")
+    @DeleteMapping("gardener/following")
     fun unfollowing(unfollowingRequestDTO: UnfollowingRequestDTO): Mono<ResponseEntity<String>> {
         return followingService.deleteFollowing(unfollowingRequestDTO)
             .flatMap { response ->
-                if (response.body == null || response.body!!.get("ok") == false) {
-                    Mono.just(ResponseEntity.status(404).body("Unfollowing failed"))
+                if (response.body == null) {
+                    Mono.just(ResponseEntity.status(HttpStatus.NOT_FOUND).body("Unfollowing failed"))
                 } else if (response.statusCode != HttpStatus.OK) {
                     Mono.just(ResponseEntity.status(response.statusCode).body("Unfollowing failed"))
                 } else {

@@ -8,6 +8,7 @@ import reactor.core.publisher.Mono
 import com.flowery.flowerygateway.dto.Message
 import com.flowery.flowerygateway.service.MessageService
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.DeleteMapping
 
 @RestController
@@ -18,7 +19,7 @@ class MessageController(@Autowired val messageService: MessageService) {
             messageService.connect()
             return Mono.just(ResponseEntity.ok("Connected"))
         } catch (e: Exception) {
-            return Mono.just(ResponseEntity.status(404).body("Connection Error"))
+            return Mono.just(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Connection Error"))
         }
     }
 
@@ -28,7 +29,7 @@ class MessageController(@Autowired val messageService: MessageService) {
             messageService.sendMessage(message)
             return Mono.just(ResponseEntity.ok("Message sent"))
         } catch (e: Exception) {
-            return Mono.just(ResponseEntity.status(404).body("Message Sending Failed"))
+            return Mono.just(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Message Sending Failed"))
         }
     }
 
@@ -38,7 +39,7 @@ class MessageController(@Autowired val messageService: MessageService) {
             messageService.disconnect()
             return Mono.just(ResponseEntity.ok("Disconnected"))
         } catch (e: Exception) {
-            return Mono.just(ResponseEntity.status(404).body("Disconnection Error"))
+            return Mono.just(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Disconnection Error"))
         }
     }
 }

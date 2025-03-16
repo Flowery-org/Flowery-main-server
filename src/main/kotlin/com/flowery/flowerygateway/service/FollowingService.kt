@@ -5,6 +5,7 @@ import com.flowery.flowerygateway.dto.UnfollowingRequestDTO
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.core.ParameterizedTypeReference
 import org.springframework.http.HttpMethod
+import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
@@ -20,7 +21,7 @@ class FollowingService(@Qualifier("followingServiceClient") private val webClien
             .retrieve()
             .bodyToMono(object : ParameterizedTypeReference<List<Map<String, UUID>>>() {})
             .map { body -> ResponseEntity.ok(body) }
-            .onErrorResume { throwable -> Mono.just(ResponseEntity.status(500).body(emptyList()))}
+            .onErrorResume { throwable -> Mono.just(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(emptyList()))}
         return response
     }
 
@@ -32,7 +33,7 @@ class FollowingService(@Qualifier("followingServiceClient") private val webClien
             .retrieve()
             .bodyToMono(object : ParameterizedTypeReference<Map<String, Boolean>>() {})
             .map { body -> ResponseEntity.ok(body) }
-            .onErrorResume { throwable -> Mono.just(ResponseEntity.status(500).body(null)) }
+            .onErrorResume { throwable -> Mono.just(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null)) }
         return response
     }
 
@@ -44,7 +45,7 @@ class FollowingService(@Qualifier("followingServiceClient") private val webClien
             .retrieve()
             .bodyToMono(object : ParameterizedTypeReference<Map<String, Boolean>>() {})
             .map { body -> ResponseEntity.ok(body) }
-            .onErrorResume { throwable -> Mono.just(ResponseEntity.status(500).body(null)) }
+            .onErrorResume { throwable -> Mono.just(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null)) }
         return response
     }
 }
