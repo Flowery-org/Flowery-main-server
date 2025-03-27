@@ -3,6 +3,7 @@ package com.flowery.flowerygateway.controller
 import com.flowery.flowerygateway.dto.FollowingRequestDTO
 import com.flowery.flowerygateway.dto.UnfollowingRequestDTO
 import com.flowery.flowerygateway.service.FollowingService
+import com.flowery.flowerygateway.service.StatusNotifierService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -11,10 +12,12 @@ import reactor.core.publisher.Mono
 import java.util.*
 
 @RestController
-class FollowingController(@Autowired val followingService : FollowingService) {
+class FollowingController(@Autowired val followingService : FollowingService,
+                            @Autowired val statusNotifierService: StatusNotifierService) {
     // add following -> Following Request DTO (followerId, followingId)
     @PostMapping("gardener/newfollowing")
     fun newFollowing(followingRequestDTO: FollowingRequestDTO): Mono<ResponseEntity<String>> {
+        statusNotifierService.notifyActivity(followingRequestDTO.followingId)
         return followingService.addFollowing(followingRequestDTO)
             .flatMap { response ->
                 if (response.body == null || response.body!!.get("ok") == false) {
@@ -48,6 +51,7 @@ class FollowingController(@Autowired val followingService : FollowingService) {
     // delete following -> Unfollowing Request DTO (followerId, followingId)
     @DeleteMapping("gardener/unfollowing")
     fun unfollowing(unfollowingRequestDTO: UnfollowingRequestDTO): Mono<ResponseEntity<String>> {
+        statusNotifierService.notifyActivity(unfollowingRequestDTO.followingId)
         return followingService.deleteFollowing(unfollowingRequestDTO)
             .flatMap { response ->
                 if (response.body == null || response.body!!.get("ok") == false) {

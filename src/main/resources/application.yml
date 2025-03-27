@@ -1,0 +1,2 @@
+status-server:
+  url: http://localhost:8080

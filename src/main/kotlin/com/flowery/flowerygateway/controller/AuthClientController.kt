@@ -2,6 +2,7 @@ package com.flowery.flowerygateway.controller
 
 import com.flowery.flowerygateway.dto.*
 import com.flowery.flowerygateway.service.AuthClientService
+import com.flowery.flowerygateway.service.StatusNotifierService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -14,7 +15,8 @@ import reactor.core.publisher.Mono
 
 @RestController
 @RequestMapping("/api/main")
-class AuthClientController(@Autowired val authClientService: AuthClientService) {
+class AuthClientController(val authClientService: AuthClientService,
+                            val statusNotifierService : StatusNotifierService) {
 
     @PutMapping("/gardener")
     fun signup(@RequestBody signupRequest: SignupRequest): Mono<ResponseEntity<SignupResponse>> {
@@ -23,6 +25,7 @@ class AuthClientController(@Autowired val authClientService: AuthClientService) 
 
     @PostMapping("/login")
     fun login(@RequestBody loginRequest: LoginRequest): Mono<ResponseEntity<LoginResponse>> {
+        //statusNotifierService.notifyActivity(loginRequest.ident)
         return authClientService.login(loginRequest)
 
     }
