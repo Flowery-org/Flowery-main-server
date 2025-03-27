@@ -14,7 +14,6 @@ import java.util.*
 @Service("followerService")
 class FollowerService(@Qualifier("followingServiceClient") private val webClient : WebClient,
                       private val followRequestValidator: FollowRequestValidator) {
-
     //팔로워 조회
     fun getFollowerList(id: UUID): Mono<ResponseEntity<List<UUID>>> {
         return webClient.get() //HTTP GET 요청 생성

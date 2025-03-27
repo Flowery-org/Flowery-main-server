@@ -2,6 +2,7 @@ package com.flowery.flowerygateway.controller
 
 import com.flowery.flowerygateway.dto.RemoveFollowerRequestDTO
 import com.flowery.flowerygateway.service.FollowerService
+import com.flowery.flowerygateway.service.StatusNotifierService
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
@@ -13,10 +14,12 @@ import reactor.core.publisher.Mono
 import java.util.*
 
 @RestController
-class FollowerController(private val followerService: FollowerService) {
-
+class FollowerController(private val followerService: FollowerService,
+                         private val statusNotifierService: StatusNotifierService)
+{
     @DeleteMapping("gardener/follower")
     fun removeFollowers(@RequestBody removeFollowerRequestDTO : RemoveFollowerRequestDTO) : Mono<ResponseEntity<String>> {
+        statusNotifierService.notifyActivity(removeFollowerRequestDTO.followingId)
         return followerService.removeFollower(removeFollowerRequestDTO)
     }
 
